@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>For Virja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Dancing+Script:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0f0a1a;
+    --bg-mid:#1c1430;
+    --bg-card:rgba(255,255,255,0.045);
+    --accent-gold:#d9a86c;
+    --accent-gold-soft:#e6c393;
+    --accent-rose:#e8b4b8;
+    --accent-lav:#b3a0d6;
+    --text-light:#f5eef9;
+    --text-muted:#a99bc0;
+    --line:rgba(255,255,255,0.09);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html,body{
+    height:100%;
+    background:var(--bg-deep);
+    color:var(--text-light);
+    font-family:'Jost', sans-serif;
+    overflow-x:hidden;
+  }
+
+  body{
+    position:relative;
+    min-height:100%;
+  }
+
+  #stars{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background:radial-gradient(ellipse at 20% 20%, #1e1533 0%, var(--bg-deep) 55%);
+  }
+
+  h1,h2,h3{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+
+  .cursive{
+    font-family:'Dancing Script', cursive;
+  }
+
+  .hidden{ display:none !important; }
+
+  /* ---------------- LOCK SCREEN ---------------- */
+  #lockScreen{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+
+  .lock-card{
+    position:relative;
+    width:100%;
+    max-width:360px;
+    padding:44px 32px 36px;
+    border-radius:24px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border:1px solid var(--line);
+    backdrop-filter:blur(18px);
+    text-align:center;
+    box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    animation:cardIn 1s ease both;
+  }
+
+  @keyframes cardIn{
+    from{ opacity:0; transform:translateY(24px) scale(0.97); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  .lock-eyebrow{
+    font-size:11px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--accent-gold-soft);
+    margin-bottom:14px;
+    opacity:0.85;
+  }
+
+  .lock-title{
+    font-size:30px;
+    color:var(--text-light);
+    margin-bottom:8px;
+  }
+
+  .lock-sub{
+    font-size:13px;
+    color:var(--text-muted);
+    margin-bottom:28px;
+    line-height:1.6;
+  }
+
+  .pw-input{
+    width:100%;
+    max-width:260px;
+    margin:0 auto 22px;
+    display:block;
+    text-align:center;
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    font-family:'Jost', sans-serif;
+    font-size:16px;
+    letter-spacing:0.12em;
+    color:var(--text-light);
+    outline:none;
+    transition:border-color .2s ease, background .2s ease;
+  }
+
+  .pw-input::placeholder{ color:var(--text-muted); letter-spacing:0.05em; }
+
+  .pw-input:focus{
+    border-color:var(--accent-gold-soft);
+    background:rgba(255,255,255,0.07);
+  }
+
+  .pw-submit{
+    display:block;
+    margin:0 auto;
+    padding:12px 34px;
+    border-radius:999px;
+    border:1px solid var(--accent-gold-soft);
+    background:rgba(217,168,108,0.12);
+    color:var(--accent-gold-soft);
+    font-family:'Jost', sans-serif;
+    font-size:13px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+
+  .pw-submit:hover{
+    background:rgba(217,168,108,0.22);
+  }
+
+  .pw-submit:active{ transform:scale(0.96); }
+
+  .lock-card.shake{
+    animation:shake .5s ease;
+  }
+
+  @keyframes shake{
+    10%,90%{ transform:translateX(-2px); }
+    20%,80%{ transform:translateX(4px); }
+    30%,50%,70%{ transform:translateX(-8px); }
+    40%,60%{ transform:translateX(8px); }
+  }
+
+  .lock-error{
+    height:16px;
+    font-size:12px;
+    color:#e39a9a;
+    margin-top:16px;
+    letter-spacing:0.03em;
+  }
+
+  /* ---------------- MAIN CONTENT ---------------- */
+  #main{
+    position:relative;
+    z-index:1;
+    max-width:880px;
+    margin:0 auto;
+    padding:90px 22px 120px;
+  }
+
+  .hero{
+    text-align:center;
+    margin-bottom:110px;
+    animation:fadeUp 1.4s ease both;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(28px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .hero-eyebrow{
+    font-size:12px;
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    color:var(--accent-gold-soft);
+    margin-bottom:22px;
+  }
+
+  .hero-title{
+    font-size:clamp(42px, 9vw, 78px);
+    line-height:1.05;
+    font-family:'Dancing Script', cursive;
+    font-weight:700;
+    background:linear-gradient(180deg, #fff, var(--accent-gold-soft));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom:20px;
+  }
+
+  .hero-line{
+    color:var(--text-muted);
+    font-size:15px;
+    max-width:440px;
+    margin:0 auto;
+    line-height:1.8;
+  }
+
+  section{ margin-bottom:100px; }
+
+  .section-head{
+    text-align:center;
+    margin-bottom:38px;
+  }
+
+  .section-eyebrow{
+    font-size:11px;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--accent-rose);
+    margin-bottom:10px;
+  }
+
+  .section-title{
+    font-size:30px;
+    color:var(--text-light);
+  }
+
+  /* ---- photo gallery ---- */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+    gap:16px;
+  }
+
+  .gallery-item{
+    position:relative;
+    aspect-ratio:1;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,0.03);
+  }
+
+  .gallery-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .gallery-item.empty::after{
+    content:'photo coming soon';
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:10px;
+    font-size:11px;
+    letter-spacing:0.06em;
+    color:var(--text-muted);
+    background:radial-gradient(circle, rgba(217,168,108,0.08), transparent 70%);
+  }
+
+  /* ---- locket / birthday ---- */
+  .locket-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    perspective:1400px;
+  }
+
+  .chain{
+    width:2px;
+    height:46px;
+    background:linear-gradient(180deg, transparent, var(--accent-gold-soft));
+    margin-bottom:-2px;
+  }
+
+  .locket{
+    position:relative;
+    width:168px;
+    height:168px;
+    border-radius:50%;
+    cursor:pointer;
+    transform-style:preserve-3d;
+    transition:transform 1s cubic-bezier(.2,.9,.25,1);
+  }
+
+  .locket.open{
+    transform:rotateY(180deg);
+  }
+
+  .locket-face{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    backface-visibility:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    border:1px solid rgba(255,255,255,0.16);
+  }
+
+  .locket-front{
+    background:radial-gradient(circle at 32% 28%, #3a2a55, #171025 70%);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.55),
+      inset 0 0 30px rgba(255,255,255,0.04);
+  }
+
+  .locket.unlocked .locket-front{
+    background:radial-gradient(circle at 32% 28%, #5a3f78, var(--accent-gold) 130%);
+    box-shadow:
+      0 0 50px rgba(217,168,108,0.55),
+      0 18px 40px rgba(0,0,0,0.45);
+  }
+
+  .locket-back{
+    background:radial-gradient(circle at 32% 28%, #4a3468, var(--accent-gold-soft) 140%);
+    transform:rotateY(180deg);
+    box-shadow:0 0 50px rgba(217,168,108,0.45);
+  }
+
+  .locket-icon{
+    font-size:38px;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+  }
+
+  .locket-hint{
+    margin-top:8px;
+    font-size:10px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.75);
+  }
+
+  .locket-glow{
+    position:absolute;
+    inset:-30px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(217,168,108,0.35), transparent 70%);
+    opacity:0;
+    transition:opacity 1s ease;
+    pointer-events:none;
+    animation:pulseGlow 3s ease-in-out infinite;
+  }
+
+  .locket.unlocked .locket-glow{ opacity:1; }
+
+  @keyframes pulseGlow{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.12); }
+  }
+
+  .birthday-status{
+    text-align:center;
+    margin-top:26px;
+    font-size:13px;
+    color:var(--text-muted);
+    line-height:1.8;
+  }
+
+  .countdown-row{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    margin-top:18px;
+    flex-wrap:wrap;
+  }
+
+  .cd-box{
+    min-width:64px;
+    padding:12px 6px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,0.03);
+    text-align:center;
+  }
+
+  .cd-num{
+    font-family:'Playfair Display', serif;
+    font-size:22px;
+    color:var(--accent-gold-soft);
+    font-variant-numeric:tabular-nums;
+  }
+
+  .cd-label{
+    font-size:9px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin-top:4px;
+  }
+
+  /* ---- letter reveal ---- */
+  #letterZone{
+    margin-top:56px;
+    max-width:600px;
+    margin-left:auto;
+    margin-right:auto;
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+
+  #letterZone.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .envelope-scene{ perspective:1600px; margin-bottom:10px; }
+
+  .envelope{
+    position:relative;
+    width:100%;
+    max-width:340px;
+    margin:0 auto;
+    height:210px;
+  }
+
+  .env-body{
+    position:absolute;
+    inset:0;
+    top:40px;
+    background:linear-gradient(180deg, #241934, #180f24);
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  }
+
+  .env-flap{
+    position:absolute;
+    top:0; left:0; right:0;
+    height:96px;
+    background:linear-gradient(160deg, #34233f, #221730);
+    clip-path:polygon(0 0, 100% 0, 50% 88%);
+    transform-origin:top;
+    transform-style:preserve-3d;
+    transition:transform 1.1s cubic-bezier(.3,.9,.2,1);
+    z-index:3;
+    border-radius:10px 10px 0 0;
+  }
+
+  .envelope.open .env-flap{
+    transform:rotateX(180deg);
+  }
+
+  .env-seal{
+    position:absolute;
+    top:58px; left:50%;
+    transform:translate(-50%,0);
+    width:34px; height:34px;
+    border-radius:50%;
+    background:var(--accent-gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;
+    box-shadow:0 4px 14px rgba(217,168,108,0.5);
+    z-index:4;
+  }
+
+  .envelope.open .env-seal{ display:none; }
+
+  .env-paper{
+    position:absolute;
+    left:8%; right:8%;
+    top:26px;
+    height:0;
+    overflow:hidden;
+    background:linear-gradient(180deg,#fbf6ee,#f3ead8);
+    border-radius:6px;
+    box-shadow:0 14px 34px rgba(0,0,0,0.4);
+    transition:height 1s ease .5s, top 1s ease .5s;
+    z-index:2;
+  }
+
+  .envelope.open .env-paper{
+    top:-140px;
+    height:340px;
+  }
+
+  .letter-card{
+    margin-top:40px;
+    padding:36px 30px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:var(--bg-card);
+    backdrop-filter:blur(14px);
+  }
+
+  .letter-topline{
+    font-family:'Dancing Script', cursive;
+    font-size:22px;
+    color:var(--accent-rose);
+    margin-bottom:6px;
+  }
+
+  .letter-greeting{
+    font-family:'Dancing Script', cursive;
+    font-size:30px;
+    color:var(--accent-gold-soft);
+    margin-bottom:18px;
+  }
+
+  .letter-body p{
+    font-size:14.5px;
+    line-height:2;
+    color:var(--text-light);
+    opacity:0.92;
+    margin-bottom:16px;
+  }
+
+  .letter-sign{
+    margin-top:18px;
+    font-family:'Dancing Script', cursive;
+    font-size:26px;
+    color:var(--accent-rose);
+    text-align:right;
+  }
+
+  /* ---- cake ---- */
+  .cake-wrap{
+    display:flex;
+    justify-content:center;
+    margin:44px 0 8px;
+  }
+
+  .cake{
+    position:relative;
+    width:150px;
+  }
+
+  .candle{
+    position:absolute;
+    top:-46px; left:50%;
+    transform:translateX(-50%);
+    width:6px; height:34px;
+    background:linear-gradient(180deg,#e6c393,#b3814a);
+    border-radius:2px;
+  }
+
+  .flame{
+    position:absolute;
+    top:-16px; left:50%;
+    transform:translateX(-50%);
+    width:9px; height:16px;
+    background:radial-gradient(circle at 50% 70%, #fff2c2, #f2a154 70%, transparent);
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation:flicker 1.6s ease-in-out infinite;
+    filter:drop-shadow(0 0 8px rgba(242,161,84,0.8));
+  }
+
+  @keyframes flicker{
+    0%,100%{ transform:translateX(-50%) scale(1) rotate(-2deg); }
+    50%{ transform:translateX(-50%) scale(1.12) rotate(3deg); }
+  }
+
+  .tier{
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.15);
+  }
+
+  .tier1{ height:34px; background:linear-gradient(180deg,#e8b4b8,#c98891); }
+  .tier2{ height:40px; margin-top:-4px; background:linear-gradient(180deg,#d9a86c,#b3814a); border-radius:6px; }
+  .tier3{ height:46px; margin-top:-4px; background:linear-gradient(180deg,#b3a0d6,#8a76ad); border-radius:6px 6px 10px 10px; }
+
+  /* ---- balloons & confetti ---- */
+  .balloon{
+    position:fixed;
+    bottom:-120px;
+    width:38px; height:48px;
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    z-index:15;
+    pointer-events:none;
+    opacity:0.9;
+  }
+
+  .balloon::after{
+    content:'';
+    position:absolute;
+    bottom:-26px; left:50%;
+    width:1px; height:26px;
+    background:rgba(255,255,255,0.4);
+  }
+
+  @keyframes floatUp{
+    from{ transform:translateY(0) translateX(0); }
+    to{ transform:translateY(-115vh) translateX(var(--drift)); }
+  }
+
+  .confetti{
+    position:fixed;
+    top:-20px;
+    width:8px; height:14px;
+    z-index:16;
+    pointer-events:none;
+    opacity:0.95;
+  }
+
+  @keyframes confettiFall{
+    from{ transform:translateY(0) rotate(0deg); }
+    to{ transform:translateY(110vh) rotate(600deg); }
+  }
+
+  footer{
+    text-align:center;
+    color:var(--text-muted);
+    font-size:12px;
+    letter-spacing:0.05em;
+    padding-bottom:20px;
+  }
+
+  footer span{
+    font-family:'Dancing Script', cursive;
+    color:var(--accent-rose);
+    font-size:16px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<audio id="bgSong" src="song.mp3" preload="auto" loop></audio>
+
+<!-- LOCK SCREEN -->
+<div id="lockScreen">
+  <div class="lock-card" id="lockCard">
+    <div class="lock-eyebrow">Aarav &nbsp;&#8942;&nbsp; Virja</div>
+    <h1 class="lock-title cursive">A little secret</h1>
+    <p class="lock-sub">Type the word only we'd know.</p>
+    <input type="password" id="pwInput" class="pw-input" autocomplete="off" autofocus inputmode="text" enterkeyhint="done" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;">
+    <button class="pw-submit" id="pwSubmit">Unlock</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main" class="hidden">
+
+  <div class="hero">
+    <div class="hero-eyebrow">A small corner of the internet, just for you</div>
+    <h1 class="hero-title">For Brinjal</h1>
+    <p class="hero-line">Virja, you're one of the best people I know. Here's a little something for your birthday.</p>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <div class="section-eyebrow">A little something</div>
+      <h2 class="section-title">Just a few things I'm thankful for</h2>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-item"><img src="photo1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('empty')"></div>
+      <div class="gallery-item"><img src="photo2.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('empty')"></div>
+      <div class="gallery-item"><img src="photo3.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('empty')"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-eyebrow">July 18</div>
+      <h2 class="section-title">Something is waiting for you</h2>
+    </div>
+
+    <div class="locket-wrap">
+      <div class="chain"></div>
+      <div class="locket" id="locket">
+        <div class="locket-glow"></div>
+        <div class="locket-face locket-front">
+          <div class="locket-icon" id="locketIcon">&#10022;</div>
+          <div class="locket-hint" id="locketHint">still sealed</div>
+        </div>
+        <div class="locket-face locket-back">
+          <div class="locket-icon">&#10084;</div>
+        </div>
+      </div>
+
+      <div class="birthday-status" id="birthdayLockedStatus">
+        <div>This little locket opens itself on your birthday.</div>
+        <div class="countdown-row">
+          <div class="cd-box"><div class="cd-num" id="cdDays">0</div><div class="cd-label">Days</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdHours">0</div><div class="cd-label">Hours</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdMins">0</div><div class="cd-label">Mins</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdSecs">0</div><div class="cd-label">Secs</div></div>
+        </div>
+      </div>
+
+      <div class="birthday-status hidden" id="birthdayUnlockedStatus">
+        Happy birthday, Brinjal. Go on, open it.
+      </div>
+    </div>
+
+    <div id="letterZone">
+      <div class="envelope-scene">
+        <div class="envelope" id="envelope">
+          <div class="env-paper"></div>
+          <div class="env-body"></div>
+          <div class="env-flap"></div>
+          <div class="env-seal">&#10084;</div>
+        </div>
+      </div>
+
+      <div class="letter-card">
+        <div class="letter-topline">BAIGAN, FINALLY YOUR BODAYYY</div>
+        <div class="letter-greeting">HAPPY BODAYYYYY MERIIIIIIIII CLOSEST FRNDDDD</div>
+        <div class="letter-body">
+          <p>Agar frnd list ka koi number hota to bc aap #1 ke bhii uparr hotii yaar.</p>
+          <p>Yaar aapka jyada time nhi lunga ik bohot busy hoge aaj to ill make it short, i just wanna thank u and your parents (umm nvm this one) u litrally joined my life like rude girl and became the swwetest one, this was so fast that i didn't even realized kii sb ho gya dosti, bsff and sbbb it wasss fast but fun! hehehe how u ffeeeel abt me ki ye kitna bolta hai kitna tey tey krta hai meko farq ni pdtaaaa hahahaha mai aapko rone me aur rula deta hu ik my speciality andd yaar meko na bhook lgri hai (idk ye kaise aaya isme).</p>
+          <p>Mai yaar hmesha thankful rhunga and always greatfull rhunga ki jb liitrally koi ni tha aaap mere sath khade theee thank you soo sooo sooo much for this love, care and hearing (bcc sunne and smjhne wale ko english me kya bolte haiii) and yaaar i will pray ki aapko sb mile joo aap chao sivaye us chiz ke cuz i want u to win.</p>
+          <p>And at the end itna hi bolunga i may hurt u some tem in excitment, anger ya misunderstanding i already did some times really sorry never meant to do that yaar glti se huii genuanlly (mkc laptop me autocorrect kb aayega) love u hmesha as closest frnddd and thank u soo much for making my days and helping me out in bad times i will always do that too.</p>
+          <p>Bcc ill make it short bolke pura din likh diya lmaooooo enjoyy yourr day yaaar.</p>
+        </div>
+        <div class="letter-sign">keep smiling and moving,<br>proud of uuuuu alwaysss</div>
+      </div>
+
+      <div class="cake-wrap">
+        <div class="cake">
+          <div class="candle"><div class="flame"></div></div>
+          <div class="tier tier1"></div>
+          <div class="tier tier2"></div>
+          <div class="tier tier3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>made with love, for <span>Brinjal</span></footer>
+</div>
+
+<script>
+/* ---------------- STARFIELD ---------------- */
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const count = Math.floor((canvas.width * canvas.height) / 9000);
+  stars = Array.from({length: count}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.3 + 0.3,
+    phase: Math.random() * Math.PI * 2,
+    speed: 0.01 + Math.random() * 0.02
+  }));
+}
+function drawStars(t){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(const s of stars){
+    const twinkle = 0.5 + 0.5 * Math.sin(t * s.speed + s.phase);
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(245,238,249,${0.15 + twinkle*0.65})`;
+    ctx.fill();
+  }
+  requestAnimationFrame(drawStars);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+requestAnimationFrame(drawStars);
+
+/* ---------------- LOCK LOGIC ---------------- */
+const PASSWORD = "baigan";
+
+const lockCard = document.getElementById('lockCard');
+const lockError = document.getElementById('lockError');
+const bgSong = document.getElementById('bgSong');
+const pwInput = document.getElementById('pwInput');
+const pwSubmit = document.getElementById('pwSubmit');
+
+function tryUnlock(){
+  const val = pwInput.value.trim().toLowerCase();
+  if(val === PASSWORD){
+    bgSong.currentTime = 8;
+    bgSong.play().catch(() => {});
+    document.getElementById('lockScreen').style.transition = 'opacity .6s ease';
+    document.getElementById('lockScreen').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('lockScreen').classList.add('hidden');
+      document.getElementById('main').classList.remove('hidden');
+      initBirthdayState();
+    }, 550);
+  } else {
+    lockError.textContent = "that's not quite it";
+    lockCard.classList.add('shake');
+    setTimeout(() => {
+      lockCard.classList.remove('shake');
+      pwInput.value = "";
+      lockError.textContent = "";
+    }, 550);
+  }
+}
+
+pwSubmit.addEventListener('click', tryUnlock);
+pwInput.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') tryUnlock();
+});
+
+// Try to bring up the mobile keyboard automatically. Most mobile browsers
+// only allow this after a user gesture, so we also focus on first tap
+// anywhere on the card as a reliable fallback.
+window.addEventListener('DOMContentLoaded', () => pwInput.focus());
+lockCard.addEventListener('touchstart', () => pwInput.focus(), { once:true });
+lockCard.addEventListener('click', () => pwInput.focus());
+
+/* ---------------- BIRTHDAY LOCK / COUNTDOWN ---------------- */
+function isBirthdayToday(){
+  const now = new Date();
+  return now.getMonth() === 6 && now.getDate() === 18; // July 18
+}
+
+function nextBirthdayDate(){
+  const now = new Date();
+  let target = new Date(now.getFullYear(), 6, 18, 0, 0, 0);
+  if(now > target && !(now.getMonth()===6 && now.getDate()===18)){
+    target = new Date(now.getFullYear() + 1, 6, 18, 0, 0, 0);
+  }
+  return target;
+}
+
+let birthdayUnlocked = false;
+
+function initBirthdayState(){
+  birthdayUnlocked = isBirthdayToday();
+  const locket = document.getElementById('locket');
+  const lockedStatus = document.getElementById('birthdayLockedStatus');
+  const unlockedStatus = document.getElementById('birthdayUnlockedStatus');
+  const icon = document.getElementById('locketIcon');
+  const hint = document.getElementById('locketHint');
+
+  if(birthdayUnlocked){
+    locket.classList.add('unlocked');
+    lockedStatus.classList.add('hidden');
+    unlockedStatus.classList.remove('hidden');
+    icon.innerHTML = "&#10022;";
+    hint.textContent = "tap to open";
+  } else {
+    lockedStatus.classList.remove('hidden');
+    unlockedStatus.classList.add('hidden');
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+}
+
+function updateCountdown(){
+  const now = new Date();
+  const target = nextBirthdayDate();
+  let diff = Math.max(0, target - now);
+
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff / (1000*60*60)) % 24);
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  document.getElementById('cdDays').textContent = d;
+  document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cdMins').textContent = String(m).padStart(2,'0');
+  document.getElementById('cdSecs').textContent = String(s).padStart(2,'0');
+}
+
+document.getElementById('locket').addEventListener('click', () => {
+  const locket = document.getElementById('locket');
+  if(!birthdayUnlocked){
+    locket.style.animation = 'shake .5s ease';
+    setTimeout(() => locket.style.animation = '', 550);
+    return;
+  }
+  if(locket.classList.contains('open')) return;
+  locket.classList.add('open');
+  setTimeout(openLetterZone, 500);
+});
+
+function openLetterZone(){
+  const zone = document.getElementById('letterZone');
+  zone.classList.add('show');
+  zone.scrollIntoView({behavior:'smooth', block:'start'});
+  setTimeout(() => {
+    document.getElementById('envelope').classList.add('open');
+    burstConfetti();
+    launchBalloons();
+    setInterval(launchBalloons, 3800);
+  }, 700);
+}
+
+/* ---------------- CONFETTI ---------------- */
+function burstConfetti(){
+  const colors = ['#d9a86c', '#e8b4b8', '#b3a0d6', '#f5eef9'];
+  for(let i=0; i<70; i++){
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random()*100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animation = `confettiFall ${2.5 + Math.random()*2}s linear forwards`;
+    c.style.animationDelay = (Math.random()*0.6) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5200);
+  }
+}
+
+/* ---------------- BALLOONS ---------------- */
+function launchBalloons(){
+  const colors = ['#d9a86c','#e8b4b8','#b3a0d6','#c98891'];
+  const count = 5;
+  for(let i=0;i<count;i++){
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.style.left = (5 + Math.random()*90) + 'vw';
+    b.style.background = `radial-gradient(circle at 32% 28%, #fff5, ${colors[Math.floor(Math.random()*colors.length)]})`;
+    const drift = (Math.random()*80 - 40) + 'px';
+    b.style.setProperty('--drift', drift);
+    b.style.animation = `floatUp ${7 + Math.random()*4}s ease-in forwards`;
+    document.body.appendChild(b);
+    setTimeout(() => b.remove(), 12000);
+  }
+}
+</script>
+</body>
+</html>
