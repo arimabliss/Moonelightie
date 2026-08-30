@@ -468,6 +468,7 @@
 <body>
 
 <canvas id="stars"></canvas>
+<audio id="bgSong" src="songggg.mp3" preload="auto" loop></audio>
 
 <!-- LOCK SCREEN -->
 <div id="lockScreen">
@@ -614,6 +615,7 @@ let entered = "";
 const dots = document.querySelectorAll('.dot');
 const lockCard = document.getElementById('lockCard');
 const lockError = document.getElementById('lockError');
+const bgSong = document.getElementById('bgSong');
 
 function refreshDots(){
   dots.forEach((d,i) => d.classList.toggle('filled', i < entered.length));
@@ -621,6 +623,8 @@ function refreshDots(){
 
 function tryUnlock(){
   if(entered === PIN){
+    bgSong.currentTime = 40;
+    bgSong.play().catch(() => {});
     document.getElementById('lockScreen').style.transition = 'opacity .6s ease';
     document.getElementById('lockScreen').style.opacity = '0';
     setTimeout(() => {
@@ -649,6 +653,10 @@ document.getElementById('keypad').addEventListener('click', (e) => {
     entered += btn.dataset.k;
     refreshDots();
     if(entered.length === 4){
+      // "Unlock" the audio element synchronously within this real tap,
+      // so the later play() call (after the short delay below) isn't
+      // blocked by the browser's autoplay policy.
+      bgSong.play().then(() => bgSong.pause()).catch(() => {});
       setTimeout(tryUnlock, 150);
     }
   }
