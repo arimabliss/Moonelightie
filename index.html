@@ -19,7 +19,7 @@
     --line:rgba(255,255,255,0.1);
   }
 
-  *{box-sizing:border-box; margin:0; padding:0;}
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
   html{ scroll-behavior:smooth; }
   html,body{ height:100%; background:var(--bg-deep); color:var(--text-light); font-family:'Jost', sans-serif; overflow-x:hidden; }
   body{ position:relative; min-height:100%; }
@@ -66,6 +66,7 @@
     background:rgba(255,255,255,0.04); color:var(--text-light);
     font-family:'Jost', sans-serif; font-size:19px; cursor:pointer;
     transition:all .15s ease; display:flex; align-items:center; justify-content:center;
+    touch-action:manipulation; user-select:none;
   }
   .key:hover{ background:rgba(244,201,93,0.16); border-color:var(--accent-yellow); }
   .key:active{ transform:scale(0.92); }
@@ -117,7 +118,7 @@
 
   /* ---- gallery ---- */
   .gallery-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; perspective:1200px; }
-  @media(max-width:480px){ .gallery-grid{ grid-template-columns:repeat(2, 1fr); } }
+  @media(max-width:600px){ .gallery-grid{ grid-template-columns:repeat(2, 1fr); gap:14px; } }
 
   .gallery-item{
     position:relative; aspect-ratio:1; border-radius:20px; overflow:hidden;
@@ -139,6 +140,7 @@
   .g3{ background:linear-gradient(140deg,#f28b82,#8a4038); }
   .g4{ background:linear-gradient(140deg,#b9a6e0,#584a7a); }
   .g5{ background:linear-gradient(140deg,#f4c95d,#f28b82); }
+  .g6{ background:linear-gradient(140deg,#5fd9c4,#b9a6e0); }
 
   /* ---- gift box ---- */
   .locket-wrap{ display:flex; flex-direction:column; align-items:center; perspective:1400px; }
@@ -147,6 +149,7 @@
     position:relative; width:168px; height:168px; border-radius:26px;
     cursor:pointer; transform-style:preserve-3d;
     transition:transform 1s cubic-bezier(.2,.9,.25,1);
+    touch-action:manipulation;
   }
   .locket.open{ transform:rotateY(180deg); }
 
@@ -265,6 +268,20 @@
   footer{ text-align:center; color:var(--text-muted); font-size:12px; letter-spacing:0.05em; padding-bottom:20px; }
   footer span{ font-family:'Caveat', cursive; color:var(--accent-coral); font-size:18px; }
 
+  @media (max-width:600px){
+    #main{ padding:60px 16px 90px; }
+    .hero{ margin-bottom:64px; }
+    section{ margin-bottom:64px; }
+    .lock-card{ padding:36px 22px 28px; }
+    .locket{ width:130px; height:130px; }
+    .locket-icon{ font-size:34px; }
+    .envelope{ max-width:280px; height:180px; }
+    .env-flap{ height:82px; }
+    .letter-card{ padding:26px 18px; margin-top:30px; }
+    .letter-body p{ font-size:14px; line-height:1.85; }
+    .orbit-card{ padding:28px 18px; }
+  }
+
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
   }
@@ -323,6 +340,7 @@
       <div class="gallery-item g3"><img src="img3.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#127775;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
       <div class="gallery-item g4"><img src="img4.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#127881;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
       <div class="gallery-item g5"><img src="img5.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#128514;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
+      <div class="gallery-item g6"><img src="img6.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#127775;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
     </div>
   </section>
 
