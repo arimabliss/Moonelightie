@@ -195,8 +195,8 @@
   .birthday-status{ text-align:center; margin-top:26px; font-size:13px; color:var(--text-muted); line-height:1.8; }
 
   /* ---- letter reveal ---- */
-  #letterZone{ margin-top:56px; max-width:600px; margin-left:auto; margin-right:auto; opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease; }
-  #letterZone.show{ opacity:1; transform:translateY(0); }
+  #letterZone{ margin-top:56px; max-width:600px; margin-left:auto; margin-right:auto; opacity:0; transition:opacity .8s ease; }
+  #letterZone.show{ opacity:1; }
 
   .envelope-scene{ perspective:1600px; margin-bottom:10px; }
   .envelope{ position:relative; width:100%; max-width:340px; margin:0 auto; height:210px; }
@@ -229,35 +229,32 @@
   .letter-card{
     margin-top:40px; padding:36px 30px; border-radius:20px;
     border:1px solid var(--line); background:rgba(38,28,56,0.96);
-    transform:perspective(1000px) rotateX(0deg) rotateY(0deg);
-    transition:transform .35s cubic-bezier(.2,.8,.2,1);
     box-shadow:0 20px 50px rgba(0,0,0,0.25);
   }
 
   .letter-topline{
     font-family:'Caveat', cursive; font-size:24px; color:var(--accent-coral); margin-bottom:6px;
-    opacity:0; transform:translateY(10px); transition:opacity .7s ease, transform .7s ease;
+    opacity:0; transition:opacity .7s ease;
   }
   .letter-greeting{
     font-family:'Caveat', cursive; font-size:32px; color:var(--accent-yellow); margin-bottom:18px;
-    opacity:0; transform:translateY(10px); transition:opacity .7s ease .1s, transform .7s ease .1s;
+    opacity:0; transition:opacity .7s ease .1s;
   }
-  .letter-card.in-view .letter-topline, .letter-card.in-view .letter-greeting{ opacity:1; transform:translateY(0); }
+  .letter-card.in-view .letter-topline, .letter-card.in-view .letter-greeting{ opacity:1; }
 
   .letter-body p{
     font-size:14.5px; line-height:1.95; color:var(--text-light);
     opacity:0; margin-bottom:16px;
-    transform:translateY(14px);
-    transition:opacity .6s ease, transform .6s ease;
+    transition:opacity .6s ease;
   }
-  .letter-body p.in-view{ opacity:0.94; transform:none; }
+  .letter-body p.in-view{ opacity:0.94; }
 
   .letter-sign{
     margin-top:18px; font-family:'Caveat', cursive; font-size:26px;
     color:var(--accent-coral); text-align:right;
-    opacity:0; transform:translateY(10px); transition:opacity .7s ease, transform .7s ease;
+    opacity:0; transition:opacity .7s ease;
   }
-  .letter-sign.in-view{ opacity:1; transform:translateY(0); }
+  .letter-sign.in-view{ opacity:1; }
   .letter-sign{ font-size:21px !important; line-height:1.4; }
   .letter-body p{ overflow-wrap:anywhere; }
 
@@ -521,13 +518,13 @@ function nextExt(img){
     </div>
   </section>
 
-  <section class="reveal">
-    <div class="section-head">
+  <section>
+    <div class="section-head reveal">
       <div class="section-eyebrow">Open it, beti</div>
       <h2 class="section-title">One gift, just for you</h2>
     </div>
 
-    <div class="locket-wrap">
+    <div class="locket-wrap reveal">
       <div class="locket unlocked" id="locket">
         <div class="locket-glow"></div>
         <div class="locket-face locket-front">
@@ -765,6 +762,7 @@ function openLetterZone(){
     card.classList.add('in-view');
 
     const paras = card.querySelectorAll('.letter-body p');
+    setTimeout(() => { card.querySelectorAll('.letter-body p, .letter-sign, .letter-topline, .letter-greeting').forEach(el => { el.classList.add('in-view'); el.style.opacity = '0.95'; }); }, 500 + paras.length * 260 + 1500);
     paras.forEach((p, i) => {
       setTimeout(() => p.classList.add('in-view'), 500 + i * 260);
     });
@@ -772,7 +770,7 @@ function openLetterZone(){
       document.querySelector('.letter-sign').classList.add('in-view');
     }, 500 + paras.length * 260 + 200);
 
-    if(window.matchMedia('(hover: hover) and (pointer: fine)').matches) initLetterTilt(card);
+
   }, 700);
 }
 
