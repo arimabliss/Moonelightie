@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>For Areeba</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+<title>For Amruta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -34,7 +34,7 @@
   .hidden{ display:none !important; }
 
   /* ---------------- LOCK SCREEN ---------------- */
-  #lockScreen{ position:fixed; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; padding:24px; }
+  #lockScreen{ position:fixed; top:0; left:0; right:0; height:100vh; height:100dvh; overflow-y:auto; z-index:20; display:flex; align-items:center; justify-content:center; padding:24px; }
 
   .lock-card{
     position:relative; width:100%; max-width:360px;
@@ -100,7 +100,7 @@
 
   section{ margin-bottom:100px; }
   .reveal{ opacity:0; transform:translateY(36px); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
-  .reveal.in-view{ opacity:1; transform:translateY(0); }
+  .reveal.in-view{ opacity:1; transform:none; }
 
   .section-head{ text-align:center; margin-bottom:38px; }
   .section-eyebrow{ font-size:11px; letter-spacing:0.28em; text-transform:uppercase; color:var(--accent-coral); margin-bottom:10px; }
@@ -140,6 +140,10 @@
   .g3{ background:linear-gradient(140deg,#f28b82,#8a4038); }
   .g4{ background:linear-gradient(140deg,#b9a6e0,#584a7a); }
   .g5{ background:linear-gradient(140deg,#f4c95d,#f28b82); }
+  .shots{ display:flex; flex-direction:column; gap:18px; max-width:640px; margin:0 auto; perspective:1200px; }
+  .shots .gallery-item{ aspect-ratio:auto; min-height:0; border-radius:16px; background:rgba(255,255,255,0.03); }
+  .shots .gallery-item img{ width:100%; height:auto; object-fit:contain; display:block; }
+  .shots .gallery-item.missing{ display:none; }
   .g6{ background:linear-gradient(140deg,#5fd9c4,#b9a6e0); }
 
   /* ---- gift box ---- */
@@ -219,15 +223,13 @@
     transition:height 1s ease .5s, top 1s ease .5s;
     z-index:2;
   }
-  .envelope.open .env-paper{ top:-140px; height:340px; }
+  .envelope.open .env-paper{ top:-40px; height:240px; }
 
   .letter-card{
     margin-top:40px; padding:36px 30px; border-radius:20px;
-    border:1px solid var(--line); background:var(--bg-card);
-    backdrop-filter:blur(14px);
-    transform-style:preserve-3d;
+    border:1px solid var(--line); background:rgba(38,28,56,0.96);
     transform:perspective(1000px) rotateX(0deg) rotateY(0deg);
-    transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
     box-shadow:0 20px 50px rgba(0,0,0,0.25);
   }
 
@@ -244,11 +246,10 @@
   .letter-body p{
     font-size:14.5px; line-height:1.95; color:var(--text-light);
     opacity:0; margin-bottom:16px;
-    transform:translateY(16px) rotateX(-8deg);
-    transform-origin:top center;
-    transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1);
+    transform:translateY(14px);
+    transition:opacity .6s ease, transform .6s ease;
   }
-  .letter-body p.in-view{ opacity:0.94; transform:translateY(0) rotateX(0deg); }
+  .letter-body p.in-view{ opacity:0.94; transform:none; }
 
   .letter-sign{
     margin-top:18px; font-family:'Caveat', cursive; font-size:26px;
@@ -256,6 +257,8 @@
     opacity:0; transform:translateY(10px); transition:opacity .7s ease, transform .7s ease;
   }
   .letter-sign.in-view{ opacity:1; transform:translateY(0); }
+  .letter-sign{ font-size:21px !important; line-height:1.4; }
+  .letter-body p{ overflow-wrap:anywhere; }
 
   /* ---- balloons & confetti ---- */
   .balloon{ position:fixed; bottom:-120px; width:38px; height:48px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; z-index:15; pointer-events:none; opacity:0.9; }
@@ -268,7 +271,32 @@
   footer{ text-align:center; color:var(--text-muted); font-size:12px; letter-spacing:0.05em; padding-bottom:20px; }
   footer span{ font-family:'Caveat', cursive; color:var(--accent-coral); font-size:18px; }
 
+  /* ---- countdown-only screen (before the birthday) ---- */
+  #timerScreen{
+    position:fixed; top:0; left:0; right:0; height:100vh; height:100dvh; z-index:10;
+    display:flex; align-items:center; justify-content:center; padding:24px; overflow-y:auto;
+    animation:fadeUp 1s ease both;
+  }
+  .timer-card{ width:100%; max-width:460px; text-align:center; }
+  .timer-icon{ font-size:44px; display:inline-block; margin-bottom:12px; animation:pulseGlow 3s ease-in-out infinite; }
+  .timer-title{ font-family:'Caveat', cursive; font-size:42px; font-weight:700; color:var(--accent-yellow); line-height:1.1; margin-bottom:10px; }
+  .timer-sub{ font-size:14px; color:var(--text-muted); line-height:1.7; margin-bottom:30px; }
+  .timer-row{ display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; }
+  .timer-box{ padding:18px 6px; border-radius:18px; border:1px solid var(--line); background:var(--bg-card); backdrop-filter:blur(14px); }
+  .timer-num{ font-family:'Baloo 2', sans-serif; font-size:clamp(28px, 9vw, 42px); font-weight:700; color:var(--accent-yellow); font-variant-numeric:tabular-nums; line-height:1; }
+  .timer-label{ margin-top:8px; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-muted); }
+  .timer-foot{ margin-top:28px; font-size:12px; letter-spacing:0.08em; color:var(--text-muted); }
+
   @media (max-width:600px){
+    .timer-title{ font-size:36px; }
+    .timer-row{ gap:8px; }
+    .timer-box{ padding:14px 4px; border-radius:14px; }
+    .shots{ gap:12px; }
+    .letter-sign{ font-size:18px !important; }
+    .hero-title{ font-size:clamp(38px, 13vw, 60px); }
+    .section-title{ font-size:25px; }
+    .lock-title{ font-size:28px; }
+    .keypad{ max-width:250px; gap:12px; }
     #main{ padding:60px 16px 90px; }
     .hero{ margin-bottom:64px; }
     section{ margin-bottom:64px; }
@@ -296,9 +324,9 @@
 <!-- LOCK SCREEN -->
 <div id="lockScreen">
   <div class="lock-card" id="lockCard">
-    <div class="lock-eyebrow">A gift for Areeba</div>
-    <h1 class="lock-title handwritten">Enter the code, bestie</h1>
-    <p class="lock-sub">You know this one.</p>
+    <div class="lock-eyebrow">A gift for Amruta</div>
+    <h1 class="lock-title handwritten">Enter the code, beti</h1>
+    <p class="lock-sub">Papa knows you remember this one.</p>
     <div class="dots" id="dots">
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
     </div>
@@ -321,33 +349,48 @@
 </div>
 
 <!-- MAIN -->
+<!-- COUNTDOWN ONLY (shown if opened before 17 October) -->
+<div id="timerScreen" class="hidden">
+  <div class="timer-card">
+    <div class="timer-icon">&#127873;</div>
+    <h2 class="timer-title">Not yet, beti&hellip;</h2>
+    <p class="timer-sub">Your surprise opens on 17 October.<br>Come back when the clock hits zero.</p>
+    <div class="timer-row">
+      <div class="timer-box"><div class="timer-num" id="tDays">0</div><div class="timer-label">Days</div></div>
+      <div class="timer-box"><div class="timer-num" id="tHours">00</div><div class="timer-label">Hours</div></div>
+      <div class="timer-box"><div class="timer-num" id="tMins">00</div><div class="timer-label">Mins</div></div>
+      <div class="timer-box"><div class="timer-num" id="tSecs">00</div><div class="timer-label">Secs</div></div>
+    </div>
+    <div class="timer-foot">&#10024; worth the wait &#10024;</div>
+  </div>
+</div>
+
 <div id="main" class="hidden">
 
   <div class="hero">
-    <div class="hero-eyebrow">A ridiculous corner of the internet, just for you</div>
-    <h1 class="hero-title">For Areeba</h1>
-    <p class="hero-line">You're chaotic, you're annoying, and somehow you're also one of my favourite people. Here's your birthday thing.</p>
+    <div class="hero-eyebrow">A little corner of the internet, just for you</div>
+    <h1 class="hero-title">For Amruta</h1>
+    <p class="hero-line">From your forever annoying papa to my one and only meri beti. Here's a little something, just for you.</p>
   </div>
 
   <section class="reveal">
     <div class="section-head">
-      <div class="section-eyebrow">Evidence</div>
-      <h2 class="section-title">Chaos, documented</h2>
+      <div class="section-eyebrow">Memories</div>
+      <h2 class="section-title">Some of our moments</h2>
     </div>
-    <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-item g1"><img src="img1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#127881;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
-      <div class="gallery-item g2"><img src="img2.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#128514;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
-      <div class="gallery-item g3"><img src="img3.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#127775;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
-      <div class="gallery-item g4"><img src="img4.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#127881;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
-      <div class="gallery-item g5"><img src="img5.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#128514;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
-      <div class="gallery-item g6"><img src="img6.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'tile\'><div class=\'tile-icon\'>&#127775;</div><div class=\'tile-label\'>photo soon</div></div>'"></div>
+    <div class="shots" id="galleryGrid">
+      <div class="gallery-item g1"><img src="p1.jpg" alt="" loading="eager" onerror="nextExt(this)"></div>
+      <div class="gallery-item g2"><img src="p2.jpg" alt="" loading="eager" onerror="nextExt(this)"></div>
+      <div class="gallery-item g3"><img src="p3.jpg" alt="" loading="eager" onerror="nextExt(this)"></div>
+      <div class="gallery-item g4"><img src="p4.jpg" alt="" loading="eager" onerror="nextExt(this)"></div>
+      <div class="gallery-item g5"><img src="p5.jpg" alt="" loading="eager" onerror="nextExt(this)"></div>
     </div>
   </section>
 
   <section class="reveal">
     <div class="section-head">
-      <div class="section-eyebrow">Open when annoyed (or now)</div>
-      <h2 class="section-title">One gift, incoming</h2>
+      <div class="section-eyebrow">Open it, beti</div>
+      <h2 class="section-title">One gift, just for you</h2>
     </div>
 
     <div class="locket-wrap">
@@ -361,7 +404,7 @@
           <div class="locket-icon">&#127881;</div>
         </div>
       </div>
-      <div class="birthday-status">Happy birthday, Areeba. Go on, open it.</div>
+      <div class="birthday-status">Happy birthday, Amruta. Go on, open it.</div>
     </div>
 
     <div id="letterZone">
@@ -375,24 +418,42 @@
       </div>
 
       <div class="letter-card">
-        <div class="letter-topline">to my favourite headache</div>
-        <div class="letter-greeting">Happy Birthday, Areeba! &#10084;&#65039;&#128514;</div>
+        <div class="letter-topline">from your forever online baap</div>
+        <div class="letter-greeting">Happy Birthday, Amruta! &#10084;&#65039;</div>
         <div class="letter-body">
-          <p>Pata nahi aap jaisi pagal insaan meri life mein kaise aa gayi, but ab aa hi gayi hain toh jhelna toh padega. &#128557; Kabhi kabhi sochta hoon ki aap itni annoying kaise ho sakti hain, phir yaad aata hai ki aap Areeba hain, aapse aur kya hi expect kar sakte hain. &#128514;</p>
-          <p>Jokes apart, I'm genuinely glad ki aap meri life mein hain. Aapke saath random baatein karna, faltu ki arguments, ek dusre ko annoy karna aur bina kisi reason ke hasna, honestly, yeh sab bohot special hai. Shayad main har baar nahi bolta, but I really appreciate having you as my best friend.</p>
-          <p>I hope aapka birthday bohot amazing ho aur yeh saal aapke liye dher saari happiness, success aur beautiful memories lekar aaye. Jo bhi aap chahti hain, I hope aapko woh sab mile. Aur jab bhi life thodi difficult lage, yaad rakhiyega ki aapka yeh annoying best friend hamesha aapke saath hai.</p>
-          <p>Bas aise hi pagal rahiye, khush rahiye, aur apni bakchodi kabhi band mat kariyega. Haan, mujhe pareshan karna thoda kam kar sakti hain, but I know aap aisa karengi nahi. &#128514;</p>
-          <p>Happy Birthday once again, Areeba! &#10084;&#65039;</p>
+          <p>first thing first, ilysm and like lwkk itna tem sath me nikal gya soo tysmm!! 😭💗🫶🏻</p>
+          <p>happpiestt boday to you and slay like you do!! 🎀💗 I HOPEEE THIS YEAR BRINGS YOU ALL THE HAPPINESS, LOVE, SUCCESS AND PEACE YOU DESERVEEE because meri beti deserves literally THE BEST OF EVERYTHINGGG 😭🫂💗</p>
+          <p>i can quote the day we met like mile to bohot phle but stranger se baap beti ka safar randomly bliss cafe pe tamatar smaaj bn gya tha lol 😭😭 ITS SOOO DREAMY RN and i wishhh i couldd live those moments againnn. chaye wo amrud weds old soul ho yaa tamatar smaaaaj imma preserver all these memories with me forevever no doubt 😭🎀 LIKE HOW DID A RANDOM VIRTUAL APP GIVE ME A DAUGHTER WHO'S THIS CLOSE TO ME??? 😭🙏🏻 genuinely one of the most unexpected and precious things everrr.</p>
+          <p>and honestly, i don't think you realise how special it is to have someone become this close through a literal virtual app. no physical meetings, no childhood memories together, just two people who randomly crossed paths and somehow built a bond that means SO MUCH. it genuinely proves that family isn't always about being related by blood, sometimes it's just about finding your people in the most unexpected places. and i'm so glad i found you, meri betiiii. 🫂💗</p>
+          <p>thank you for being such a precious part of my life, for all the random talks, all the stupid jokes, all the chaos, and all the moments that probably seemed ordinary at the time but became memories i'll always keep close to my heart. thank you for being my e-daughter and giving me one more reason to smile whenever our little tamatar smaaj lore comes up 😭🎀 LIKE GIRLLL, OUR LORE NEEDS A WHOLE WIKIPEDIA PAGE AT THIS POINTTT.</p>
+          <p>i hope you know that no matter how much time passes, you'll always be my little e-daughter in my heart. 😭💗 i hope life treats you gently, that you achieve everything you dream of, that you never have to question your worth, and that you always have people around you who appreciate you for the person you are. i hope you keep growing into someone you're proud of, keep laughing at the most stupid things, keep being your adorable chaotic self, and never lose the little things that make you YOUUU. 🫶🏻</p>
+          <p>I WISHHH I COULD PAUSE TIME SOMETIMES AND KEEP ALL THESE LITTLE MOMENTS FOREVER. the random conversations, the inside jokes, the tamatar smaaj madness, the amrud weds old soul allegations 😭😭, and literally every single silly thing that makes our bond OURS. because someday we'll look back at all this and laugh about how unserious we were, and i already know i'll be so grateful that i got to experience all of this with you. AND OBVIOUSLY WE HAVE SOOO MANY MORE MEMORIES TO MAKE, OUR LORE IS FAR FROM OVER 😭💗</p>
+          <p>AND ONCE AGAINNN, HAPPIEST BIRTHDAY TO MY FAVOURITE DAUGHTER EVERRR. 🎂🎀💗 may this year bring you closer to all your dreams, may you get the happiness you've been wishing for, may your efforts finally pay off, and may you always have a reason to smile. i hope you experience the kind of joy that makes you forget all your worries for a while, meet people who genuinely value you, and make memories that you'll cherish foreverrr.</p>
+          <p>ILYSMMM MERI BETIIII 😭💗🫂 here's to more years of baap beti bond, more tamatar smaaj, more amrud weds old soul, more random chaos, more stupid jokes, more unforgettable memories, and more moments where we look at each other and wonder how we even became THIS unserious 😭🙏🏻</p>
+          <p>HAPPIEST BIRTHDAY ONCE AGAINNN, AARAV THE PAPEEEE. KEEP SMILING, KEEP SLAYING, KEEP BEING THE AMAZING PERSON YOU ARE, AND NEVER FORGET THAT YOU'LL ALWAYS BE MY LITTLE E-DAUGHTER. THE TAMATAR SMAAAJ FAMILY TREE STARTED WITH US AND IT'S STAYING IN HISTORY FOREVERRR. 😭🎀💗🫶🏻</p>
         </div>
-        <div class="letter-sign">Aapka favourite headache,<br>Always. &#128514;&#10084;&#65039;</div>
+        <div class="letter-sign">your forever online baap, certified tamatar smaaj partner, and the keeper of our extremely questionable family lore 😭🙏🏻💗</div>
       </div>
     </div>
   </section>
 
-  <footer>made with chaos and love, for <span>Areeba</span></footer>
+  <footer>made with love, for <span>Amruta</span></footer>
 </div>
 
 <script>
+/* image helper: tries p1.jpg, then .jpeg/.png/.webp, hides the slot if none exist */
+function nextExt(img){
+  const exts = ['jpg','jpeg','png','webp'];
+  const m = img.src.match(/\.(jpg|jpeg|png|webp)(\?.*)?$/i);
+  const cur = m ? m[1].toLowerCase() : 'jpg';
+  const i = exts.indexOf(cur);
+  if(i >= 0 && i < exts.length - 1){
+    img.src = img.getAttribute('src').replace(/\.(jpg|jpeg|png|webp)$/i, '.' + exts[i+1]);
+  } else {
+    img.parentElement.classList.add('missing');
+  }
+}
+
 /* ---------------- BACKGROUND CANVAS (soft floating dots) ---------------- */
 const canvas = document.getElementById('confettiCanvas');
 canvas.style.position = 'fixed';
@@ -436,7 +497,7 @@ window.addEventListener('resize', resizeCanvas);
 requestAnimationFrame(drawDots);
 
 /* ---------------- LOCK LOGIC ---------------- */
-const PIN = "1909";
+const PIN = "1710";
 let entered = "";
 
 const dotsEls = document.querySelectorAll('.dot');
@@ -448,16 +509,53 @@ function refreshDots(){
   dotsEls.forEach((d,i) => d.classList.toggle('filled', i < entered.length));
 }
 
+/* ---------------- BIRTHDAY GATE ---------------- */
+const BIRTHDAY = new Date(2026, 9, 17, 0, 0, 0); // 17 October 2026, 12:00 AM (device time)
+function birthdayReached(){ return new Date() >= BIRTHDAY; }
+
+function revealSite(celebrate){
+  document.getElementById('timerScreen').classList.add('hidden');
+  document.getElementById('main').classList.remove('hidden');
+  window.scrollTo(0, 0);
+  bgSong.currentTime = 40;
+  bgSong.play().catch(() => {});
+  initScrollReveal();
+  if(celebrate) burstConfetti();
+}
+
+function startTimerOnly(){
+  document.getElementById('timerScreen').classList.remove('hidden');
+  function tick(){
+    const diff = BIRTHDAY - new Date();
+    if(diff <= 0){
+      clearInterval(timerId);
+      revealSite(true);
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor(diff / 3600000) % 24;
+    const m = Math.floor(diff / 60000) % 60;
+    const sec = Math.floor(diff / 1000) % 60;
+    document.getElementById('tDays').textContent = d;
+    document.getElementById('tHours').textContent = String(h).padStart(2,'0');
+    document.getElementById('tMins').textContent = String(m).padStart(2,'0');
+    document.getElementById('tSecs').textContent = String(sec).padStart(2,'0');
+  }
+  const timerId = setInterval(tick, 1000);
+  tick();
+}
+
 function tryUnlock(){
   if(entered === PIN){
-    bgSong.currentTime = 40;
-    bgSong.play().catch(() => {});
     document.getElementById('lockScreen').style.transition = 'opacity .6s ease';
     document.getElementById('lockScreen').style.opacity = '0';
     setTimeout(() => {
       document.getElementById('lockScreen').classList.add('hidden');
-      document.getElementById('main').classList.remove('hidden');
-      initScrollReveal();
+      if(birthdayReached()){
+        revealSite(false);
+      } else {
+        startTimerOnly();
+      }
     }, 550);
   } else {
     lockError.textContent = "not quite it";
@@ -496,6 +594,7 @@ document.getElementById('locket').addEventListener('click', () => {
   setTimeout(openLetterZone, 500);
 });
 
+let balloonTimer = null;
 function openLetterZone(){
   const zone = document.getElementById('letterZone');
   zone.classList.add('show');
@@ -504,7 +603,7 @@ function openLetterZone(){
     document.getElementById('envelope').classList.add('open');
     burstConfetti();
     launchBalloons();
-    setInterval(launchBalloons, 3800);
+    if(!balloonTimer) balloonTimer = setInterval(launchBalloons, 4500);
 
     const card = document.querySelector('.letter-card');
     card.classList.add('in-view');
@@ -517,7 +616,7 @@ function openLetterZone(){
       document.querySelector('.letter-sign').classList.add('in-view');
     }, 500 + paras.length * 260 + 200);
 
-    initLetterTilt(card);
+    if(window.matchMedia('(hover: hover) and (pointer: fine)').matches) initLetterTilt(card);
   }, 700);
 }
 
@@ -532,8 +631,6 @@ function initLetterTilt(card){
   function resetTilt(){ card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)'; }
   card.addEventListener('mousemove', (e) => tiltFromPoint(e.clientX, e.clientY));
   card.addEventListener('mouseleave', resetTilt);
-  card.addEventListener('touchmove', (e) => { if(e.touches[0]) tiltFromPoint(e.touches[0].clientX, e.touches[0].clientY); }, { passive:true });
-  card.addEventListener('touchend', resetTilt);
 }
 
 /* ---------------- CONFETTI ---------------- */
