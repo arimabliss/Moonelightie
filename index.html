@@ -59,6 +59,49 @@
   .trail{ position:fixed; z-index:44; pointer-events:none; font-size:14px; transform:translate(-50%,-50%); animation:trailFade .8s ease-out forwards; }
   @keyframes trailFade{ from{ opacity:.9; } to{ opacity:0; transform:translate(-50%,-95%) scale(.4); } }
 
+  /* ---------- TIME LOCK ---------- */
+  #timeLock{ position:fixed; inset:0; z-index:32; display:flex; align-items:center; justify-content:center; padding:24px; overflow-y:auto; min-height:100dvh; }
+  .timelock-card{ position:relative; width:100%; max-width:440px; padding:44px 28px 32px; border-radius:30px; text-align:center; overflow:hidden;
+    background:linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.018));
+    border:1px solid var(--line); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    box-shadow:0 30px 90px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.14); animation:cardIn .9s var(--ease) both; }
+  .timelock-card::before{ content:''; position:absolute; inset:-40% -60% auto; height:70%; background:radial-gradient(ellipse at center, rgba(61,224,255,.22), transparent 65%); pointer-events:none; animation:glow 5s ease-in-out infinite; }
+  .timelock-crown{ font-size:46px; display:inline-block; animation:bob 2.8s ease-in-out infinite; filter:drop-shadow(0 6px 16px rgba(61,224,255,.55)); }
+  .timelock-eyebrow{ font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--cyan); margin:10px 0 8px; }
+  .timelock-title{ font-size:34px; line-height:1.1; margin-bottom:8px; }
+  .timelock-sub{ font-size:13px; color:var(--muted); margin-bottom:24px; line-height:1.65; }
+  .countdown{ display:flex; justify-content:center; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+  .cd-unit{ display:flex; flex-direction:column; align-items:center; min-width:62px; padding:14px 8px; border-radius:16px;
+    background:rgba(255,255,255,.05); border:1px solid var(--line); box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+    position:relative; overflow:hidden; }
+  .cd-unit::after{ content:''; position:absolute; inset:0; background:linear-gradient(160deg, rgba(255,255,255,.08), transparent 55%); pointer-events:none; }
+  .cd-num{ font-family:'Baloo 2',sans-serif; font-size:30px; font-weight:800; line-height:1; color:var(--text);
+    background:linear-gradient(180deg,#fff,var(--gold) 70%,var(--pink)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    font-variant-numeric:tabular-nums; min-width:2ch; text-align:center; will-change:transform; }
+  .cd-num.tick{ animation:cdTick .4s var(--ease); }
+  @keyframes cdTick{ 0%{ transform:translateY(-8px) scale(1.1); opacity:.4; } 100%{ transform:none; opacity:1; } }
+  .cd-lbl{ font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin-top:6px; }
+  .cd-sep{ font-family:'Baloo 2',sans-serif; font-size:26px; color:var(--muted); align-self:center; margin-top:-14px; opacity:.55; animation:pulseSep 1.4s ease-in-out infinite; }
+  @keyframes pulseSep{ 0%,100%{ opacity:.25; } 50%{ opacity:.85; } }
+  .timelock-progress{ height:5px; border-radius:99px; background:rgba(255,255,255,.08); overflow:hidden; margin-bottom:16px; position:relative; }
+  .timelock-progress-bar{ height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,var(--cyan),var(--pink),var(--gold)); transition:width 1s linear; box-shadow:0 0 12px rgba(255,79,163,.6); position:relative; }
+  .timelock-hint{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:rgba(183,170,208,.6); }
+  #timeLock.fade-out{ opacity:0; transform:scale(1.04); transition:opacity .6s ease, transform .6s ease; }
+
+  /* ---------- SHOOTING STAR ---------- */
+  .shooting-star{ position:fixed; z-index:1; width:140px; height:2px; pointer-events:none; opacity:0;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.95), transparent);
+    border-radius:2px; transform:rotate(-25deg); transform-origin:left center;
+    animation:shoot linear forwards; }
+  @keyframes shoot{
+    0%{ transform:translate(0,0) rotate(-25deg) scaleX(.2); opacity:0; }
+    15%{ opacity:1; transform:translate(0,0) rotate(-25deg) scaleX(1); }
+    100%{ transform:translate(-50vw, 50vh) rotate(-25deg) scaleX(.4); opacity:0; }
+  }
+
+  /* ---------- HERO PARALLAX ---------- */
+  .hero-crown, .hero-glow{ translate: var(--mx, 0px) var(--my, 0px); transition: translate .35s cubic-bezier(.2,.8,.2,1); }
+
   /* ---------- LOCK ---------- */
   #lock{ position:fixed; inset:0; z-index:30; display:flex; align-items:center; justify-content:center; padding:24px; overflow-y:auto; min-height:100dvh; }
   .lock-card{ position:relative; width:100%; max-width:365px; padding:44px 30px 30px; border-radius:30px; text-align:center; overflow:hidden;
@@ -388,17 +431,29 @@
     .scratch-text{ font-size:22px; }
     .reason-card{ padding:28px 20px; }
     .keypad{ gap:11px; }
+    .timelock-card{ padding:36px 20px 26px; }
+    .timelock-title{ font-size:28px; }
+    .countdown{ gap:6px; }
+    .cd-unit{ min-width:54px; padding:12px 6px; }
+    .cd-num{ font-size:24px; }
+    .cd-sep{ font-size:20px; margin-top:-10px; }
   }
   @media (max-width:380px){
     .lock-card{ padding:30px 18px 22px; }
     .lock-title{ font-size:26px; }
     .mem-title{ font-size:14px; }
     .mem-back{ font-size:11.5px; }
+    .countdown{ gap:4px; }
+    .cd-unit{ min-width:46px; padding:10px 4px; }
+    .cd-num{ font-size:20px; }
+    .cd-lbl{ font-size:8px; letter-spacing:.16em; }
+    .cd-sep{ font-size:18px; margin-top:-8px; }
   }
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
     .reveal{ opacity:1 !important; transform:none !important; }
     #starfield{ display:none; }
+    .shooting-star{ display:none; }
   }
 </style>
 </head>
@@ -414,8 +469,29 @@
 <div id="progress" class="hidden"></div>
 <audio id="song" src="billo.mp3" preload="auto" loop></audio>
 
+<!-- TIME LOCK -->
+<div id="timeLock">
+  <div class="timelock-card">
+    <div class="timelock-crown">&#9203;</div>
+    <div class="timelock-eyebrow">not so fast, Billo Rani</div>
+    <h1 class="timelock-title hand">patience, bhai</h1>
+    <p class="timelock-sub">this surprise unlocks at midnight<br><strong style="color:var(--gold)">21 oct 2026 &middot; 00:00 IST</strong></p>
+    <div class="countdown" id="countdown">
+      <div class="cd-unit"><div class="cd-num" id="cdDays">00</div><div class="cd-lbl">days</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cdHours">00</div><div class="cd-lbl">hours</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cdMins">00</div><div class="cd-lbl">mins</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cdSecs">00</div><div class="cd-lbl">secs</div></div>
+    </div>
+    <div class="timelock-progress"><div class="timelock-progress-bar" id="tlProgress"></div></div>
+    <div class="timelock-hint">come back when the clock strikes twelve &#10024;</div>
+  </div>
+</div>
+
 <!-- LOCK -->
-<div id="lock">
+<div id="lock" class="hidden">
   <div class="lock-card" id="lockCard">
     <div class="lock-crown">&#128081;</div>
     <div class="lock-eyebrow">Billo Rani only</div>
@@ -736,7 +812,7 @@ const Starfield = (() => {
   }
 
   function start(){
-    if(reduceMotion) return;
+    if(reduceMotion || running) return;
     resize(); running = true; draw();
   }
 
@@ -1200,7 +1276,6 @@ $('kissBtn').addEventListener('click', e => {
   }
 
   function scratchedPct(){
-    const rect = canvas.getBoundingClientRect();
     const w = canvas.width, h = canvas.height;
     const data = ctx.getImageData(0, 0, w, h).data;
     let clear = 0, total = 0;
@@ -1462,6 +1537,125 @@ function updateProgress(){
 }
 addEventListener('scroll', updateProgress, {passive:true});
 addEventListener('resize', updateProgress);
+
+/* ============================================================ */
+/* ---------------- TIME LOCK & EXTRA ANIMATIONS -------------- */
+/* ============================================================ */
+
+/* ---------- TIME LOCK COUNTDOWN ---------- */
+(function(){
+  // Target: 21 Oct 2026, 00:00 IST  →  Oct 20 2026, 18:30 UTC
+  const TARGET = new Date('2026-10-21T00:00:00+05:30').getTime();
+  // Baseline for the progress bar: 1 Oct 2026, 00:00 IST
+  const START  = new Date('2026-10-01T00:00:00+05:30').getTime();
+
+  const timeLock = $('timeLock');
+  const lockEl   = $('lock');
+  const dEl = $('cdDays'), hEl = $('cdHours'), mEl = $('cdMins'), sEl = $('cdSecs');
+  const progEl = $('tlProgress');
+  let interval = null;
+
+  const pad2 = n => String(n).padStart(2, '0');
+
+  function setNum(el, val){
+    const s = pad2(val);
+    if(el.textContent === s) return;
+    el.textContent = s;
+    el.classList.remove('tick');
+    void el.offsetWidth;          // restart animation
+    el.classList.add('tick');
+  }
+
+  function showPinLock(){
+    timeLock.classList.add('fade-out');
+    setTimeout(() => {
+      timeLock.classList.add('hidden');
+      timeLock.classList.remove('fade-out');
+      lockEl.classList.remove('hidden');
+      // restore original PIN-lock sparkle behaviour
+      interactive = false;
+      try{ Confetti.burst(200, innerWidth / 2, innerHeight * 0.3); }catch(e){}
+      try{ emojiBurst(innerWidth / 2, innerHeight / 2, 30, 220); }catch(e){}
+      try{ SFX.success(); }catch(e){}
+      haptic([30, 60, 30, 60, 30]);
+    }, 650);
+  }
+
+  function update(){
+    const now  = Date.now();
+    const diff = TARGET - now;
+
+    if(diff <= 0){
+      if(interval){ clearInterval(interval); interval = null; }
+      showPinLock();
+      return;
+    }
+
+    const totalSec = Math.floor(diff / 1000);
+    const days  = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const mins  = Math.floor((totalSec % 3600) / 60);
+    const secs  = totalSec % 60;
+
+    setNum(dEl, days);
+    setNum(hEl, hours);
+    setNum(mEl, mins);
+    setNum(sEl, secs);
+
+    const total = TARGET - START;
+    const pct = Math.max(0, Math.min(100, ((now - START) / total) * 100));
+    if(progEl) progEl.style.width = pct.toFixed(2) + '%';
+  }
+
+  if(Date.now() >= TARGET){
+    // already unlocked — go straight to PIN lock
+    timeLock.classList.add('hidden');
+    lockEl.classList.remove('hidden');
+  } else {
+    // before unlock — show countdown
+    interactive = true;              // allow sparkles/trail during countdown
+    update();
+    interval = setInterval(update, 1000);
+    try{ Starfield.start(); }catch(e){}
+  }
+})();
+
+/* ---------- SHOOTING STARS ---------- */
+(function(){
+  if(reduceMotion) return;
+  function shootStar(){
+    const el = document.createElement('div');
+    el.className = 'shooting-star';
+    el.style.left = rand(15, 85) + 'vw';
+    el.style.top  = rand(3, 35) + 'vh';
+    el.style.animationDuration = rand(1.4, 2.4) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2800);
+  }
+  setTimeout(shootStar, 2500);
+  setInterval(() => { if(Math.random() < 0.55) shootStar(); }, 4500);
+})();
+
+/* ---------- HERO PARALLAX ---------- */
+(function(){
+  if(reduceMotion || IS_MOBILE()) return;
+  document.addEventListener('mousemove', e => {
+    if(!interactive) return;
+    const crown = document.querySelector('.hero-crown');
+    const glow  = document.querySelector('.hero-glow');
+    if(!crown && !glow) return;
+    const cx = (e.clientX / innerWidth - 0.5) * 2;
+    const cy = (e.clientY / innerHeight - 0.5) * 2;
+    if(crown){
+      crown.style.setProperty('--mx', (cx * 10).toFixed(1) + 'px');
+      crown.style.setProperty('--my', (cy * 8).toFixed(1) + 'px');
+    }
+    if(glow){
+      glow.style.setProperty('--mx', (cx * 20).toFixed(1) + 'px');
+      glow.style.setProperty('--my', (cy * 15).toFixed(1) + 'px');
+    }
+  }, {passive:true});
+})();
 </script>
 </body>
 </html>
