@@ -15,8 +15,8 @@ window.CONFIG = {
 
   /* ---------- IDENTITY ---------- */
   identity: {
-    name: "Shivam",           // hero letter animation + footer
-    nickname: "Billo Rani"    // footer highlight
+    name: "Ridit",           // hero letter animation + footer
+    nickname: "ridit"    // footer highlight
   },
 
   /* ---------- THEME (CSS variables) ---------- */
@@ -42,7 +42,7 @@ window.CONFIG = {
     target: "2026-10-21T00:00:00+05:30",
     progressStart: "2026-10-01T00:00:00+05:30",
     crownEmoji: "⏳",
-    eyebrow: "not so fast, Billo Rani",
+    eyebrow: "not so fast, Bbg Rani",
     title: "patience, bhai",
     subtitle: "this surprise unlocks at midnight",
     targetDisplay: "21 oct 2026 · 00:00 IST",
